@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import Blog from './Blog';
+import BlogPost from './components/BlogPost';
 import { 
   Hammer, 
   BookOpen, 
@@ -330,6 +331,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:id" element={<BlogPost />} />
       </Routes>
 
       {/* Footer */}

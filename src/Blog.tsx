@@ -206,8 +206,12 @@ const Blog = () => {
                 </div>
                 
                 <button className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200">
+                <Link 
+                  to={`/blog/${post.id}`}
+                  className="block w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors duration-200 text-center"
+                >
                   Read Full Article
-                </button>
+                </Link>
               </div>
             </article>
           ))}
