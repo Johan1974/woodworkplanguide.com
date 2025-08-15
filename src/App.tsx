@@ -1,7 +1,4 @@
 import React from 'react';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import Blog from './Blog';
-import BlogPost from './components/BlogPost';
 import { 
   Hammer, 
   BookOpen, 
@@ -19,14 +16,46 @@ import {
   MapPin
 } from 'lucide-react';
 
-function HomePage() {
+function App() {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     element?.scrollIntoView({ behavior: 'smooth' });
   };
 
   return (
-    <>
+    <div className="min-h-screen bg-white">
+      {/* Navigation */}
+      <nav className="bg-white shadow-sm sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            <div className="flex items-center space-x-2">
+              <Hammer className="h-8 w-8 text-blue-600" />
+              <span className="text-xl font-bold text-gray-900">Ted's Woodworking</span>
+            </div>
+            <div className="hidden md:flex space-x-8">
+              <button 
+                onClick={() => scrollToSection('features')}
+                className="text-gray-700 hover:text-blue-600 transition-colors duration-200"
+              >
+                Features
+              </button>
+              <button 
+                onClick={() => scrollToSection('testimonials')}
+                className="text-gray-700 hover:text-blue-600 transition-colors duration-200"
+              >
+                Reviews
+              </button>
+              <button 
+                onClick={() => scrollToSection('guarantee')}
+                className="text-gray-700 hover:text-blue-600 transition-colors duration-200"
+              >
+                Guarantee
+              </button>
+            </div>
+          </div>
+        </div>
+      </nav>
+
       {/* Hero Section */}
       <section className="bg-gradient-to-br from-blue-50 to-indigo-100 py-20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -260,79 +289,6 @@ function HomePage() {
           </div>
         </div>
       </section>
-    </>
-  );
-}
-
-function App() {
-  const location = useLocation();
-  
-  const scrollToSection = (sectionId: string) => {
-    const element = document.getElementById(sectionId);
-    element?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  return (
-    <div className="min-h-screen bg-white">
-      {/* Navigation */}
-      <nav className="bg-white shadow-sm sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center space-x-2">
-              <Hammer className="h-8 w-8 text-blue-600" />
-              <span className="text-xl font-bold text-gray-900">Ted's Woodworking</span>
-            </div>
-            <div className="hidden md:flex space-x-8">
-              <button 
-                onClick={() => scrollToSection('features')}
-                className={`transition-colors duration-200 ${
-                  location.pathname === '/' 
-                    ? 'text-gray-700 hover:text-blue-600' 
-                    : 'text-gray-400 cursor-not-allowed'
-                }`}
-                disabled={location.pathname !== '/'}
-              >
-                Features
-              </button>
-              <Link 
-                to="/blog"
-                className="text-gray-700 hover:text-blue-600 transition-colors duration-200"
-              >
-                Blog
-              </Link>
-              <button 
-                onClick={() => scrollToSection('testimonials')}
-                className={`transition-colors duration-200 ${
-                  location.pathname === '/' 
-                    ? 'text-gray-700 hover:text-blue-600' 
-                    : 'text-gray-400 cursor-not-allowed'
-                }`}
-                disabled={location.pathname !== '/'}
-              >
-                Reviews
-              </button>
-              <button 
-                onClick={() => scrollToSection('guarantee')}
-                className={`transition-colors duration-200 ${
-                  location.pathname === '/' 
-                    ? 'text-gray-700 hover:text-blue-600' 
-                    : 'text-gray-400 cursor-not-allowed'
-                }`}
-                disabled={location.pathname !== '/'}
-              >
-                Guarantee
-              </button>
-            </div>
-          </div>
-        </div>
-      </nav>
-
-      {/* Routes */}
-      <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="/blog/:id" element={<BlogPost />} />
-      </Routes>
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
@@ -361,30 +317,25 @@ function App() {
               <h3 className="text-lg font-semibold mb-6">Quick Links</h3>
               <ul className="space-y-3">
                 <li>
-                  <Link 
-                    to="/"
+                  <button 
+                    onClick={() => scrollToSection('features')}
                     className="text-gray-400 hover:text-white transition-colors duration-200"
                   >
-                    Home
-                  </Link>
+                    Features
+                  </button>
                 </li>
                 <li>
-                  <Link 
-                    to="/blog"
+                  <button 
+                    onClick={() => scrollToSection('testimonials')}
                     className="text-gray-400 hover:text-white transition-colors duration-200"
                   >
-                    Blog
-                  </Link>
+                    Reviews
+                  </button>
                 </li>
                 <li>
                   <button 
                     onClick={() => scrollToSection('guarantee')}
-                    className={`transition-colors duration-200 ${
-                      location.pathname === '/' 
-                        ? 'text-gray-400 hover:text-white' 
-                        : 'text-gray-600 cursor-not-allowed'
-                    }`}
-                    disabled={location.pathname !== '/'}
+                    className="text-gray-400 hover:text-white transition-colors duration-200"
                   >
                     Guarantee
                   </button>
