@@ -22,7 +22,7 @@ echo "🚀 Starting local WoodworkPlanGuide..."
 # 1. Update Browserslist DB
 # ----------------------------
 echo "🌐 Updating Browserslist database..."
-npx update-browserslist-db@latest --force
+npx update-browserslist-db@latest --force || true
 
 # ----------------------------
 # 2. Rebuild Tailwind CSS
@@ -35,7 +35,7 @@ npx tailwindcss -i ./src/input.css -o ./app/static/css/tailwind.css --minify
 # ----------------------------
 if ! python -c "import flask" &> /dev/null; then
     echo "📦 Installing Python dependencies..."
-    pip install flask
+    pip install -r requirements.txt
 fi
 
 # ----------------------------
@@ -43,16 +43,17 @@ fi
 # ----------------------------
 if lsof -i :$PORT &> /dev/null; then
     echo "⚠️ Port $PORT is in use. Attempting to free it..."
-    # kill all processes on the port in one go
     sudo fuser -k $PORT/tcp
     echo "✅ Port $PORT should now be free."
 fi
 
-
 # ----------------------------
-# 5. Start Flask server
+# 5. Start Flask dev server
 # ----------------------------
-export FLASK_APP=app/app.py
+export FLASK_APP="app.app"
 export FLASK_ENV=development
 echo "🚀 Starting Flask development server at http://127.0.0.1:$PORT ..."
 flask run --host=127.0.0.1 --port=$PORT
+
+
+

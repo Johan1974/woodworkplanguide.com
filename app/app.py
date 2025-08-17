@@ -90,3 +90,6 @@ def _send_email(app, name, email, message):
 
 app = create_app()
 
+if __name__ == "__main__":
+    app.run(debug=True)
+

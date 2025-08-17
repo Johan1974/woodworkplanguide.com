@@ -63,4 +63,5 @@ EXPOSE 8000
 CMD ["gunicorn", "-w", "3", "-b", "0.0.0.0:8000", "app.app:create_app()"]
 
 
+
 # CMD ["gunicorn", "-w", "3", "-b", "0.0.0.0:8000", "--factory", "app.app:create_app"]
