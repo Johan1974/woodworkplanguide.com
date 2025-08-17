@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="legal container">
+  <h1>Privacy Policy</h1>
+  <p>This website respects your privacy. We collect minimal data necessary to operate the site, such as basic analytics and form submissions you choose to send us.</p>
+  <h2>Information We Collect</h2>
+  <ul>
+    <li>Contact form submissions (name, email, message)</li>
+    <li>Anonymous usage analytics (if enabled)</li>
+  </ul>
+  <h2>How We Use Information</h2>
+  <ul>
+    <li>To respond to your messages</li>
+    <li>To improve site performance and content</li>
+  </ul>
+  <h2>Third-Party Links</h2>
+  <p>We may link to third-party sites. Their content and privacy practices are their own. Affiliate links are clearly disclosed.</p>
+  <h2>Your Choices</h2>
+  <p>Contact us at {{ CONTACT_EMAIL }} to request deletion of contact messages you’ve sent.</p>
+</section>
+{% endblock %}

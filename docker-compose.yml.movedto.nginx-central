@@ -1,0 +1,24 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: woodworkplanguide_web
+    restart: unless-stopped
+    ports:
+      - "8085:8000"
+    volumes:
+      - ./app:/app/app  # optional for dev sync
+    environment:
+      - FLASK_ENV=production
+
+  nginx:
+    image: nginx:latest
+    container_name: woodworkplanguide_nginx
+    ports:
+      - "85:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./app/static:/usr/share/nginx/html/static
+    depends_on:
+      - web
