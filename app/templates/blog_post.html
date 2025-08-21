@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto py-16 px-4 sm:px-6 lg:px-8">
+
+  <!-- Blog title -->
+  <h1 class="text-4xl font-bold mb-6 text-gray-900">
+    {{ post.title }}
+  </h1>
+
+  {% if post.image %}
+  <div class="flex justify-center mb-8">
+    <img src="{{ url_for('static', filename=post.image) }}"
+         alt="{{ post.title }} woodworking project"
+         class="rounded-lg shadow-md object-contain"
+         style="max-height: 192px; max-width: 192px;">
+  </div>
+  {% endif %}
+
+  <!-- Blog content -->
+  <article class="prose lg:prose-xl prose-gray max-w-4xl mx-auto my-16">
+    {{ post.content | safe }}
+  </article>
+
+</div>
+{% endblock %}

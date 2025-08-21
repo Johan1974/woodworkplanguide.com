@@ -25,35 +25,57 @@ echo "🌐 Updating Browserslist database..."
 npx update-browserslist-db@latest --force || true
 
 # ----------------------------
-# 2. Rebuild Tailwind CSS
+# 2. Start Tailwind watcher in background
 # ----------------------------
-echo "🎨 Rebuilding Tailwind CSS..."
-npx tailwindcss -i ./src/input.css -o ./app/static/css/tailwind.css --minify
+echo "🎨 Starting Tailwind in watch mode..."
+npx tailwindcss -i ./src/input.css -o ./app/static/css/tailwind.css --watch &
+TAILWIND_PID=$!
 
 # ----------------------------
 # 3. Install Python dependencies if missing
 # ----------------------------
-if ! python -c "import flask" &> /dev/null; then
-    echo "📦 Installing Python dependencies..."
-    pip install -r requirements.txt
-fi
+for pkg in flask livereload bleach; do
+    if ! python -c "import $pkg" &> /dev/null; then
+        echo "📦 Installing $pkg..."
+        pip install $pkg
+    fi
+done
 
 # ----------------------------
 # 4. Free port if needed
 # ----------------------------
 if lsof -i :$PORT &> /dev/null; then
-    echo "⚠️ Port $PORT is in use. Attempting to free it..."
+    echo "⚠️ Port $PORT is in use. Freeing it..."
     sudo fuser -k $PORT/tcp
-    echo "✅ Port $PORT should now be free."
 fi
 
 # ----------------------------
-# 5. Start Flask dev server
+# 5. Start Flask + LiveReload
 # ----------------------------
 export FLASK_APP="app.app"
 export FLASK_ENV=development
-echo "🚀 Starting Flask development server at http://127.0.0.1:$PORT ..."
-flask run --host=127.0.0.1 --port=$PORT
+echo "🚀 Starting Flask development server with LiveReload on http://127.0.0.1:$PORT ..."
+
+python - <<EOF
+from livereload import Server
+from app.app import app
+
+import logging
+logging.getLogger('livereload').setLevel(logging.WARNING)
+logging.getLogger('tornado.access').setLevel(logging.WARNING)
+logging.getLogger('tornado.general').setLevel(logging.WARNING)
 
 
+print ("test")
 
+server = Server(app.wsgi_app)
+# Watch all app files recursively
+server.watch('app/templates', delay=10)  
+server.watch('app/static', delay=10)  
+server.serve(port=$PORT, host='127.0.0.1', debug=True)
+EOF
+
+# ----------------------------
+# 6. Cleanup Tailwind watcher on exit
+# ----------------------------
+kill $TAILWIND_PID

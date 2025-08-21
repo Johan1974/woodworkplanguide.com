@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {% set env = config.get('ENV', 'development') | lower %}
+
+  {% if env == 'production' %}
+    <!-- Google Analytics Loader -->
+    <script>
+      window.GA_ID = "{{ config.GA_ID }}";
+    </script>
+    <script src="{{ url_for('static', filename='js/gtag-loader.js') }}"></script>
+  {% else %}
+    <!-- Development / fallback: LiveReload -->
+    <!-- <script src="http://127.0.0.1:35729/livereload.js"></script> -->
+  {% endif %}
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ SITE_NAME }}</title>
+
+  <!-- Local Tailwind CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+  <!-- Optional custom JS -->
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+<body class="bg-white text-gray-800">
+  <!-- HEADER -->
+  <header class="site-header bg-blue-600 text-white shadow">
+    <div class="container mx-auto flex items-center justify-between p-4">
+      <a href="{{ url_for('index') }}" class="text-xl font-bold">{{ SITE_NAME }}</a>
+      <nav class="space-x-4">
+        <a href="{{ url_for('index') }}" class="hover:underline">Home</a>
+        <a href="{{ url_for('contact') }}" class="hover:underline">Contact</a>
+        <a href="{{ url_for('privacy') }}" class="hover:underline">Privacy</a>
+        <a href="{{ url_for('terms') }}" class="hover:underline">Terms</a>
+        <a href="{{ url_for('blog') }}" class="hover:underline">Blog</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="container mx-auto py-8">
+    {% block content %}{% endblock %}
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="site-footer bg-gray-100 text-center py-4 border-t">
+    <p>&copy; {{ YEAR }} {{ SITE_NAME }}. All rights reserved.</p>
+  </footer>
+</body>
+</html>

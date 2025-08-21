@@ -1,47 +1,125 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ SITE_NAME }}</title>
-  <meta name="description" content="Discover curated woodworking plans, tips, and tools to build projects with confidence.">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-  {% if GA_ID %}
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id={{ GA_ID }}"></script>
+  {% set env = config.get('ENV', 'development') | lower %}
+
+  {% if env == 'production' %}
   <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', '{{ GA_ID }}');
+    window.GA_ID = "{{ GA_ID }}";
   </script>
+  <script src="{{ url_for('static', filename='js/gtag-loader.js') }}"></script>
   {% endif %}
-  <meta property="og:title" content="{{ SITE_NAME }}">
-  <meta property="og:description" content="Curated woodworking plans and resources.">
-  <meta property="og:type" content="website">
-</head>
-<body>
-  <header class="site-header">
-    <div class="container">
-      <a href="{{ url_for('index') }}" class="logo">{{ SITE_NAME }}</a>
-      <nav>
-        <a href="{{ url_for('index') }}">Home</a>
-        <a href="{{ url_for('contact') }}">Contact</a>
-        <a href="{{ url_for('privacy') }}">Privacy</a>
-        <a href="{{ url_for('terms') }}">Terms</a>
-      </nav>
-    </div>
-  </header>
-  <main>
-    {% block content %}{% endblock %}
-  </main>
-  <footer class="site-footer">
-    <div class="container">
-      <p>&copy; {{ YEAR }} {{ SITE_NAME }}. All rights reserved.</p>
-    </div>
-  </footer>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ SITE_NAME }}</title>
+
+  <!-- Tailwind CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/tailwind.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+
+  <!-- Optional custom JS -->
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+  <!-- Lucide icons -->
+  <script src="https://cdn.jsdelivr.net/npm/lucide@0.539.0/dist/umd/lucide.min.js"></script>
+</head>
+
+<body class="bg-white text-gray-900">
+  <div id="root">
+    <div class="min-h-screen bg-white">
+      <!-- Navbar -->
+      <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div class="flex justify-between items-center h-16">
+            <div class="flex items-center space-x-2">
+              <i data-lucide="hammer" class="h-8 w-8 text-blue-600"></i>
+              <span class="text-xl font-bold text-gray-900">{{ SITE_NAME }}</span>
+            </div>
+            <div class="hidden md:flex space-x-8">
+              <!-- Scroll-to-section buttons -->
+              <a href="{{ url_for('index') }}#features" class="text-gray-700 hover:text-blue-600 transition-colors duration-200">Features</a>
+              <a href="{{ url_for('index') }}#testimonials" class="text-gray-700 hover:text-blue-600 transition-colors duration-200">Testimonials</a>
+              <a href="{{ url_for('index') }}#guarantee" class="text-gray-700 hover:text-blue-600 transition-colors duration-200">Guarantee</a>
+              <a href="{{ url_for('blog') }}" class="text-gray-700 hover:text-blue-600 transition-colors duration-200">Blog</a>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- Page content -->
+      {% block content %}{% endblock %}
+
+      <!-- Footer -->
+      <footer class="bg-gray-900 text-gray-300 py-12 mt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-4 gap-8">
+          <div>
+            <div class="flex items-center space-x-2 mb-4">
+              <i data-lucide="hammer" class="h-6 w-6 text-blue-400"></i>
+              <span class="text-lg font-bold text-white">{{ SITE_NAME }}</span>
+            </div>
+            <p class="text-gray-400 text-sm leading-relaxed">
+              The #1 resource for woodworking plans and projects. Join thousands of woodworkers worldwide.
+            </p>
+          </div>
+          <div>
+            <h4 class="text-white font-semibold mb-4">Quick Links</h4>
+            <ul class="space-y-2 text-sm">
+              <li><a href="{{ url_for('index') }}#features" class="hover:text-blue-400 transition">Features</a></li>
+              <li><a href="{{ url_for('index') }}#testimonials" class="hover:text-blue-400 transition">Testimonials</a></li>
+              <li><a href="{{ url_for('index') }}#guarantee" class="hover:text-blue-400 transition">Guarantee</a></li>
+              <li><a href="{{ url_for('blog') }}" class="hover:text-blue-400 transition">Blog</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white font-semibold mb-4">Resources</h4>
+            <ul class="space-y-2 text-sm">
+              <li><a href="#" class="hover:text-blue-400 transition">Support</a></li>
+              <li><a href="#" class="hover:text-blue-400 transition">FAQs</a></li>
+              <li><a href="#" class="hover:text-blue-400 transition">Privacy Policy</a></li>
+              <li><a href="#" class="hover:text-blue-400 transition">Terms & Conditions</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white font-semibold mb-4">Stay Connected</h4>
+            <p class="text-gray-400 text-sm mb-4">Get the latest woodworking tips and updates.</p>
+            <form class="flex">
+              <input type="email" placeholder="Enter your email"
+                     class="w-full px-3 py-2 rounded-l-lg focus:outline-none text-gray-900">
+              <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-r-lg text-white">
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+        <div class="border-t border-gray-800 mt-12 pt-6 text-center text-sm text-gray-500">
+          © {{ SITE_NAME }} {{ YEAR }}. All rights reserved.
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+
+    // Smooth scroll only if on homepage
+    document.addEventListener('DOMContentLoaded', function () {
+      const homepageLinks = document.querySelectorAll('a[href^="{{ url_for("index") }}#"]');
+      homepageLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+          e.preventDefault();
+          const targetId = this.hash.slice(1);
+          const targetEl = document.getElementById(targetId);
+          if (targetEl) {
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+          } else {
+            // If not on homepage, go to homepage first
+            window.location.href = this.href;
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>
